@@ -285,7 +285,7 @@ class SMAApiClient(SMABaseClient):
         headers: dict | None = None,
         as_json: bool = True,
     ) -> aiohttp.ClientResponse:
-        """Handle retries and re-login for base_client.make_request()."""
+        """Make a request to an API endpoint, handling re-auth and retries."""
         make_request_impl = super().make_request
 
         async def _make_request_w(

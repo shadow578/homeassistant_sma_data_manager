@@ -3,8 +3,7 @@ from ..known_channels import DEVICE_KIND_GRID, DEVICE_KIND_PV, UNIT_VOLT, UNIT_W
 
 
 def test_known_channel_normal():
-    """
-    test if a 'normal' (non-array) known channel is returned correctly
+    """Test if a 'normal' (non-array) known channel is returned correctly.
 
     for 'normal' channels, this is a simple lookup in the known_channels dict
     """
@@ -16,8 +15,7 @@ def test_known_channel_normal():
     assert ch["unit"] == UNIT_WATT
 
 def test_known_channel_array():
-    """
-    test if a array known channel is returned correctly
+    """Test if a array known channel is returned correctly.
 
     for array channels, the index brackets are removed and replaced by empty brackets.
     then, the resulting string is used as key in the known_channels dict

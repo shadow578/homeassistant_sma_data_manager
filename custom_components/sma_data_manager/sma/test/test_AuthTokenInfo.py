@@ -1,10 +1,10 @@
-"""unit tests for model.AuthTokenInfo"""
+"""unit tests for model.AuthTokenInfo."""
 
 import pytest
 from ..model import AuthTokenInfo, SMAApiParsingError
 
 def test_from_dict_valid_dict():
-    """test that AuthTokenInfo.from_dict() parses a valid dict correctly"""
+    """Test that AuthTokenInfo.from_dict() parses a valid dict correctly."""
 
     # prepare dict
     token_dict = {
@@ -31,7 +31,7 @@ def test_from_dict_valid_dict():
     assert token.is_expired is False
 
 def test_from_dict_invalid_dict():
-    """test that AuthTokenInfo.from_dict() raises an exception if the dict is invalid"""
+    """Test that AuthTokenInfo.from_dict() raises an exception if the dict is invalid."""
 
     with pytest.raises(SMAApiParsingError):
         AuthTokenInfo.from_dict({})

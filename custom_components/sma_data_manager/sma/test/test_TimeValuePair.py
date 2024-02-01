@@ -1,10 +1,10 @@
-"""unit tests for model.TimeValuePair"""
+"""unit tests for model.TimeValuePair."""
 
 import pytest
 from ..model import TimeValuePair, SMAApiParsingError
 
 def test_from_dict_valid_dict():
-    """test that TimeValuePair.from_dict() parses a valid dict correctly"""
+    """Test that TimeValuePair.from_dict() parses a valid dict correctly."""
 
     # call from_dict()
     time_value_pair = TimeValuePair.from_dict({
@@ -17,7 +17,7 @@ def test_from_dict_valid_dict():
     assert time_value_pair.value == 300
 
 def test_from_dict_valid_no_value():
-    """test that TimeValuePair.from_dict() parses a valid dict correctly even if there is no value"""
+    """Test that TimeValuePair.from_dict() parses a valid dict correctly even if there is no value."""
 
     # call from_dict()
     time_value_pair = TimeValuePair.from_dict({
@@ -30,7 +30,7 @@ def test_from_dict_valid_no_value():
 
 
 def test_from_dict_invalid_dict():
-    """test that TimeValuePair.from_dict() raises an exception if the dict is invalid"""
+    """Test that TimeValuePair.from_dict() raises an exception if the dict is invalid."""
 
     with pytest.raises(SMAApiParsingError):
         TimeValuePair.from_dict({})

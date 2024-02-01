@@ -1,5 +1,5 @@
-"""unit test for SMA client implementation"""
-import mock
+"""unit test for SMA client implementation."""
+from unittest import mock
 import pytest
 from urllib.parse import quote
 
@@ -11,14 +11,14 @@ from .http_response_mock import ClientResponseMock
 
 @pytest.mark.asyncio
 async def test_client_auth():
-    """test client login / logout methods"""
+    """Test client login / logout methods."""
 
     # mock for make_request
     did_get_token = False
     did_refresh_token = False
     did_delete_token = False
     async def make_request_mock(method: str, endpoint: str, data: dict|None = None, headers: dict|None = None, as_json: bool = True):
-        """mock for make_request"""
+        """Mock for make_request."""
         nonlocal did_get_token
         nonlocal did_refresh_token
         nonlocal did_delete_token
@@ -137,7 +137,7 @@ async def test_client_auth():
 
 @pytest.mark.asyncio
 async def test_client_get_all_components():
-    """test SMAApiClient.get_all_components"""
+    """Test SMAApiClient.get_all_components."""
 
     # mock for make_request
     did_get_root = False
@@ -145,7 +145,7 @@ async def test_client_get_all_components():
     did_get_inv1_info = False
     did_get_inv2_info = False
     async def make_request_mock(method: str, endpoint: str, data: dict|None = None, headers: dict|None = None, as_json: bool = True):
-        """mock for make_request"""
+        """Mock for make_request."""
         nonlocal did_get_root
         nonlocal did_get_children
         nonlocal did_get_inv1_info
@@ -230,7 +230,7 @@ async def test_client_get_all_components():
             assert as_json is True
 
             # inv1
-            if endpoint == f"widgets/deviceinfo?deviceId=inv1":
+            if endpoint == "widgets/deviceinfo?deviceId=inv1":
                 did_get_inv1_info = True
                 return ClientResponseMock(
                     data={
@@ -245,7 +245,7 @@ async def test_client_get_all_components():
                 )
 
             # inv2
-            if endpoint == f"widgets/deviceinfo?deviceId=inv2":
+            if endpoint == "widgets/deviceinfo?deviceId=inv2":
                 did_get_inv2_info = True
                 return ClientResponseMock(
                     data={
@@ -307,12 +307,12 @@ async def test_client_get_all_components():
 
 @pytest.mark.asyncio
 async def test_client_get_all_live_measurements():
-    """test SMAApiClient.get_all_live_measurements"""
+    """Test SMAApiClient.get_all_live_measurements."""
 
     # mock for make_request
     did_get_measurements = False
     async def make_request_mock(method: str, endpoint: str, data: dict|None = None, headers: dict|None = None, as_json: bool = True):
-        """mock for make_request"""
+        """Mock for make_request."""
         nonlocal did_get_measurements
 
         # required for login
@@ -424,12 +424,12 @@ async def test_client_get_all_live_measurements():
 
 @pytest.mark.asyncio
 async def test_client_get_live_measurements():
-    """test SMAApiClient.get_live_measurements for regular (non-array) channels"""
+    """Test SMAApiClient.get_live_measurements for regular (non-array) channels."""
 
     # mock for make_request
     did_get_measurement = False
     async def make_request_mock(method: str, endpoint: str, data: dict|None = None, headers: dict|None = None, as_json: bool = True):
-        """mock for make_request"""
+        """Mock for make_request."""
         nonlocal did_get_measurement
 
         # required for login
@@ -526,8 +526,7 @@ async def test_client_get_live_measurements():
 
 @pytest.mark.asyncio
 async def test_client_get_live_measurements_array():
-    """
-    test SMAApiClient.get_live_measurements with array channels
+    """Test SMAApiClient.get_live_measurements with array channels.
 
     array channels are channels that contain multiple values in a single measurement.
     they are used by, among others, the "Measurement.DcMs.Vol[]" channels (see https://github.com/shadow578/homeassistant_sma_data_manager/issues/20).
@@ -538,7 +537,7 @@ async def test_client_get_live_measurements_array():
     # mock for make_request
     did_get_measurement = False
     async def make_request_mock(method: str, endpoint: str, data: dict|None = None, headers: dict|None = None, as_json: bool = True):
-        """mock for make_request"""
+        """Mock for make_request."""
         nonlocal did_get_measurement
 
         # required for login

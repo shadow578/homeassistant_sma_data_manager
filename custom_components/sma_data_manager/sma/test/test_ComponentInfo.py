@@ -1,11 +1,11 @@
-"""unit tests for model.ComponentInfo"""
+"""unit tests for model.ComponentInfo."""
 
 import pytest
 from ..model import ComponentInfo, SMAApiParsingError
 
 
 def test_from_dict_valid_dict():
-    """test that ComponentInfo.from_dict() parses a valid dict correctly"""
+    """Test that ComponentInfo.from_dict() parses a valid dict correctly."""
 
     # prepare dict
     component_info_dict = {
@@ -27,13 +27,13 @@ def test_from_dict_valid_dict():
     assert component_info.firmware_version is None
 
 def test_from_dict_invalid_dict():
-    """test that ComponentInfo.from_dict() raises an exception if the dict is invalid"""
+    """Test that ComponentInfo.from_dict() raises an exception if the dict is invalid."""
 
     with pytest.raises(SMAApiParsingError):
         ComponentInfo.from_dict({})
 
 def test_add_extra():
-    """test that ComponentInfo.add_extra() adds the extra info correctly"""
+    """Test that ComponentInfo.add_extra() adds the extra info correctly."""
 
     # prepare component info object
     component_info = ComponentInfo.from_dict({

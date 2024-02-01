@@ -155,8 +155,7 @@ class ChannelValues:
 
     @classmethod
     def __parse_dict(cls, data: dict) -> tuple[str, str, list]:
-        """
-        parse channel info and values from dict.
+        """Parse channel info and values from dict.
 
         :returns: tuple of (channel_id, component_id, values)
         """

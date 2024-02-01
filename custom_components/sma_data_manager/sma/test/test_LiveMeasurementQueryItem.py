@@ -1,9 +1,9 @@
-"""unit tests for model.LiveMeasurementQueryItem"""
+"""unit tests for model.LiveMeasurementQueryItem."""
 
 from ..model import LiveMeasurementQueryItem
 
 def test_to_dict():
-    """test that LiveMeasurementQueryItem.to_dict() returns the correct dict"""
+    """Test that LiveMeasurementQueryItem.to_dict() returns the correct dict."""
 
     # prepare LiveMeasurementQueryItem
     query = LiveMeasurementQueryItem(

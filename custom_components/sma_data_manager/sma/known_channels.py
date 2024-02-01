@@ -55,16 +55,14 @@ __COMMON_ENUM_VALUES = {
     457: "Waiting for grid voltage",
 }
 
-KnownChannelEntry = TypedDict(
-        "KnownChannel",
-        {
-            "name": str,  # descriptive name
-            "unit": str,  # native unit of measurement, UNIT_*
-            "device_kind": str,  # device kind, DEVICE_KIND_*
-            "cumulative_mode": str | None,  # cumulative mode? (None=CUM_MODE_NONE)
-            "enum_values": dict[int, str],  # SMA enum values, if unit is UNIT_ENUM
-        },
-    )
+class KnownChannelEntry(TypedDict):
+    """Entry in the __KNOWN_CHANNELS dict."""
+
+    name: str
+    unit: str
+    device_kind: str
+    cumulative_mode: str | None
+    enum_values: dict[int, str]
 
 __KNOWN_CHANNELS: dict[
     str,
@@ -649,8 +647,7 @@ __KNOWN_CHANNELS: dict[
 }
 
 def get_known_channel(channel_id: str) -> KnownChannelEntry | None:
-    """
-    Get known channel by channel_id.
+    """Get known channel by channel_id.
 
     this function handles array channels with arbitrary index automatically.
     """

@@ -587,8 +587,8 @@ async def test_client_get_live_measurements_array():
             return ClientResponseMock(
                 data=[
                     {
-                        "channelId": "chastt",
-                        "componentId": "arrtst[]",
+                        "channelId": "arrtst[]",
+                        "componentId": "inv0",
                         "values": [
                             {
                                 "time": "2024-02-01T11:30:00Z",

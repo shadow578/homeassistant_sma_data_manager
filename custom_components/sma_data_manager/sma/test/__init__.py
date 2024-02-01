@@ -1,0 +1,1 @@
+"""SMA API unit tests."""

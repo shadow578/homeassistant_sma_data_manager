@@ -30,10 +30,32 @@ CUMULATIVE_MODE_MAXIMUM: str = (
     "MAXIMUM"  # maximum measurement, e.g. maximum temperature
 )
 
+__COMMON_ENUM_VALUES = {
+    55: "Communication error",
+    303: "Off",
+    304: "Island operation",
+    305: "Island operation",
+    306: "SMA island operation 60 Hz",
+    307: "Ok",
+    308: "On",
+    309: "Operating",
+    310: "General operating mode",
+    311: "Open",
+    312: "Phase assignment",
+    313: "SMA island operation 50 Hz",
+    314: "Maximum active power",
+    315: "Maximum active power output",
+    316: "Active power setpoint operating mode",
+    317: "All phases",
+    318: "Overload",
+    319: "Overtemperature",
+    454: "Calibration",
+    455: "Warning",
+    456: "Waiting for DC start conditions",
+    457: "Waiting for grid voltage",
+}
 
-KNOWN_CHANNELS: dict[
-    str,
-    TypedDict(
+KnownChannelEntry = TypedDict(
         "KnownChannel",
         {
             "name": str,  # descriptive name
@@ -42,7 +64,11 @@ KNOWN_CHANNELS: dict[
             "cumulative_mode": str | None,  # cumulative mode? (None=CUM_MODE_NONE)
             "enum_values": dict[int, str],  # SMA enum values, if unit is UNIT_ENUM
         },
-    ),
+    )
+
+__KNOWN_CHANNELS: dict[
+    str,
+    KnownChannelEntry,
 ] = {
     "Measurement.GridMs.TotVAr": {
         "name": "Grid Reactive Power",
@@ -223,31 +249,7 @@ KNOWN_CHANNELS: dict[
         "name": "device health status",
         "device_kind": DEVICE_KIND_OTHER,
         "unit": UNIT_ENUM,
-        "enum_values": {
-            # TODO: Measurement.Operation.Health enum_values may be partially incorrect, only [55, 307, 455] are validated
-            55: "Communication error",
-            303: "Off",
-            304: "Island operation",
-            305: "Island operation",
-            306: "SMA island operation 60 Hz",
-            307: "Ok",
-            308: "On",
-            309: "Operating",
-            310: "General operating mode",
-            311: "Open",
-            312: "Phase assignment",
-            313: "SMA island operation 50 Hz",
-            314: "Maximum active power",
-            315: "Maximum active power output",
-            316: "Active power setpoint operating mode",
-            317: "All phases",
-            318: "Overload",
-            319: "Overtemperature",
-            454: "Calibration",
-            455: "Warning",
-            456: "Waiting for DC start conditions",
-            457: "Waiting for grid voltage",
-        },
+        "enum_values": __COMMON_ENUM_VALUES, # TODO: Measurement.Operation.Health enum_values may be partially incorrect, only [55, 307, 455] are validated
     },
     "Measurement.Operation.WMaxInLimNom": {
         "name": "maximum active power setpoint (grid supply)",
@@ -623,4 +625,39 @@ KNOWN_CHANNELS: dict[
         "device_kind": DEVICE_KIND_GRID,
         "unit": UNIT_VOLT,
     },
+    "Measurement.DcMs.Vol[]": {
+        "name": "dc voltage",
+        "device_kind": DEVICE_KIND_PV,
+        "unit": UNIT_VOLT,
+    },
+    "Measurement.DcMs.Amp[]": {
+        "name": "dc current",
+        "device_kind": DEVICE_KIND_PV,
+        "unit": UNIT_AMPERE,
+    },
+    "Measurement.DcMs.Watt[]": {
+        "name": "dc power",
+        "device_kind": DEVICE_KIND_PV,
+        "unit": UNIT_WATT,
+    },
+    "Measurement.MltFncSw.SttMstr": {
+        "name": "multi-function relay status",
+        "device_kind": DEVICE_KIND_OTHER,
+        "unit": UNIT_ENUM,
+        "enum_values": __COMMON_ENUM_VALUES, # TODO: Measurement.MltFncSw.SttMstr enum_values may be partially incorrect, only [303] are validated
+    }
 }
+
+def get_known_channel(channel_id: str) -> KnownChannelEntry | None:
+    """
+    Get known channel by channel_id.
+
+    this function handles array channels with arbitrary index automatically.
+    """
+
+    # replace array index brackets with empty brackets
+    if channel_id.endswith("]"):
+        channel_id = f"{channel_id[:-3]}[]"
+
+    # get known channel
+    return __KNOWN_CHANNELS.get(channel_id, None)

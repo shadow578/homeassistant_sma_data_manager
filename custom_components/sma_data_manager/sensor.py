@@ -30,7 +30,7 @@ from .const import DOMAIN, LOGGER
 from .sma.model import ComponentInfo
 
 from .sma.known_channels import (
-    KNOWN_CHANNELS,
+    get_known_channel,
     UNIT_VOLT,
     UNIT_AMPERE,
     UNIT_WATT,
@@ -154,7 +154,7 @@ class SMASensor(SMAEntity, SensorEntity):
         fqid = channel_parts_to_fqid(self.component_id, self.channel_id)
 
         # get entry for known channel
-        known_channel: dict = KNOWN_CHANNELS.get(self.channel_id)
+        known_channel: dict = get_known_channel(self.channel_id)
 
         # values set by known channel unit
         name = self.channel_id

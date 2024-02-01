@@ -4,6 +4,7 @@ from urllib.parse import quote
 from datetime import timedelta
 import contextlib
 from logging import Logger
+from itertools import chain
 
 import aiohttp
 
@@ -275,7 +276,15 @@ class SMAApiClient(SMABaseClient):
         """Convert raw measurements response to python model."""
         if not isinstance(measurements, list):
             raise SMAApiClientError("received invalid response: not a list")
-        return [ChannelValues.from_dict(measurement) for measurement in measurements]
+
+        # parse measurements to ChannelValues
+        # ChannelValues.from_dict() returns a list with one or
+        # more ChannelValues (support for array channels requires this), so
+        # we need to flatten the result afterwards
+        cvs = [ChannelValues.from_dict(measurement) for measurement in measurements]
+
+        # flatten list of lists
+        return list(chain.from_iterable(cvs))
 
     async def make_request(
         self,

@@ -20,15 +20,15 @@ class CookieJarMock:
 
 class ClientResponseMock:
 
-    data: dict
+    data: any
     cookies: CookieJarMock
 
-    def __init__(self, data: dict, cookies: list[tuple[str, str]]):
+    def __init__(self, data: any, cookies: list[tuple[str, str]] = []):
         self.data = data
         self.cookies = CookieJarMock(
             cookies=[(name, CookieMock(value=value)) for name, value in cookies]
         )
 
-    async def json(self) -> dict:
+    async def json(self) -> any:
         return self.data
 

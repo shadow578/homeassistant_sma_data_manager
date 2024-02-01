@@ -12,6 +12,18 @@
             "type": "shell",
             "command": "scripts/lint",
             "problemMatcher": []
+        },
+        {
+            "label": "Run Unit Tests (Once)",
+            "type": "shell",
+            "command": "scripts/test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Unit Tests (Watch)",
+            "type": "shell",
+            "command": "scripts/test --watch",
+            "problemMatcher": []
         }
     ]
 }

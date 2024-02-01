@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+if [ "$1" = "--watch" ]; then
+    # watch mode
+    while true; do
+    pytest -v || true
+    sleep 10
+    clear
+    done
+else
+    # single run
+    pytest -v
+fi

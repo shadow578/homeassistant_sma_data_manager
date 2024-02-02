@@ -654,7 +654,8 @@ def get_known_channel(channel_id: str) -> KnownChannelEntry | None:
 
     # replace array index brackets with empty brackets
     if channel_id.endswith("]"):
-        channel_id = f"{channel_id[:-3]}[]"
+        bracket_start = channel_id.rfind("[")
+        channel_id = f"{channel_id[0:bracket_start]}[]"
 
     # get known channel
     return __KNOWN_CHANNELS.get(channel_id, None)

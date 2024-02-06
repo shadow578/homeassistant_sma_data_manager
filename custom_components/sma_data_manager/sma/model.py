@@ -154,8 +154,11 @@ class ChannelValues:
         return self.values[-1]
 
     @classmethod
-    def from_dict(cls, data: dict) -> "ChannelValues":
-        """Create from dict, verify required fields and their types."""
+    def __parse_dict(cls, data: dict) -> tuple[str, str, list]:
+        """Parse channel info and values from dict.
+
+        :returns: tuple of (channel_id, component_id, values)
+        """
         if not isinstance(data, dict):
             raise SMAApiParsingError("channel values is not a dict")
 
@@ -177,16 +180,56 @@ class ChannelValues:
         if not isinstance(data["values"], list):
             raise SMAApiParsingError("field 'values' in channel values is not a list")
 
-        # convert all values to TimeValuePair
-        values = [TimeValuePair.from_dict(v) for v in data["values"]]
+        return (data["channelId"], data["componentId"], data["values"])
 
-        # create ChannelValue
-        return cls(
-            channel_id=data["channelId"],
-            component_id=data["componentId"],
-            values=values,
-        )
+    @classmethod
+    def from_dict(cls, data: dict) -> list["ChannelValues"]:
+        """Create from dict, verify required fields and their types."""
 
+        # parse channel info and values from dict
+        channelId, componentId, values = cls.__parse_dict(data)
+
+        # test if this is an array channel
+        array_value = values[0] if len(values) > 0 else None
+        is_array = (isinstance(array_value, dict) # array_value is a dict
+                    and "time" in array_value # value has "time" field
+                    and isinstance(array_value["time"], str) # "time" field is a string
+                    and "values" in array_value # value has "values" field (instead of normal "value" field)
+                    and isinstance(array_value["values"], list)) # "values" field is a list
+
+        if is_array:
+            # array channel:
+            # trim "[]" from channel id
+            channelId = channelId[:-2] if channelId.endswith("[]") else channelId
+
+            # get shared time
+            time = array_value["time"]
+
+            # manually create ChannelValues for each array value
+            return [
+                cls(
+                    channel_id=f"{channelId}[{i}]",
+                    component_id=componentId,
+                    values=[
+                        TimeValuePair(time=time, value=value)
+                    ]
+                )
+                for i, value
+                in enumerate(values[0]["values"])
+            ]
+        else:
+            # single-value channel:
+            # convert all values to TimeValuePair
+            values = [TimeValuePair.from_dict(v) for v in data["values"]]
+
+            # create ChannelValue
+            return [
+                cls(
+                    channel_id=channelId,
+                    component_id=componentId,
+                    values=values,
+                )
+            ]
 
 class ComponentInfo:
     """information about a component (e.g. a device)."""

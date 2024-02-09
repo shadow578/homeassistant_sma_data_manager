@@ -1,3 +1,8 @@
+
+> [!WARNING]
+> Deprecation Notice: This integration will not receive any further updates as i no longer have access to a SMA Data Manager to test with.
+
+
 # SMA Data Manager
 
 [![GitHub Release][releases-shield]][releases]
